@@ -1,6 +1,9 @@
+import bodyParser from 'body-parser'
 import express from 'express'
+import compress from 'compression'
 import config from 'config'
 import mongoose from 'mongoose'
+
 import logger from './logger'
 
 mongoose.connect(
@@ -9,6 +12,12 @@ mongoose.connect(
 )
 
 const app = express()
+
+app.disable('x-powered-by')
+
+app.use(bodyParser.json({ limit: '1mb' }))
+app.use(compress())
+// app.use(session())
 
 const port = process.env.API_PORT || config.get('api.port')
 
